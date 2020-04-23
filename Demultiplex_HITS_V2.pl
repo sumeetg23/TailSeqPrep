@@ -49,15 +49,17 @@ foreach my $outputname  (@tempbarcodes) {
 my %fh = get_write_handles(@tempbarcodes);
 
 # Demultiplex
+my $barcodepos = 3; #offset by 1 because the index starts from 0
+
 while(my $newline = <SEQUENCEFILE>) {
 
 	$newline =~ s/[\n\r]//g;
 	if($newline eq "") {next;} # skip any empty lines - usually only present in custom format files
 	my @seqarray = split(/\t/, $newline);
-	$seqarray[3] =~ s/\./N/g; # converting any . into N's in the barcode.
+	$seqarray[$barcodepos] =~ s/\./N/g; # converting any . into N's in the barcode.
 	if (scalar(@seqarray) > 1) {
 	
-		my $barcode = substr($seqarray[3],0,$barcodelength);
+		my $barcode = substr($seqarray[$barcodepos],0,$barcodelength);
 
 		if(!defined($indexbarcode{$barcode})){
 			my %scoring = ();
