@@ -12,10 +12,12 @@ use Carp;
 use File::Basename;
 
 
-my $USAGE = "\nperl Demultiplex_HITS_V1.pl <Input file> <LIST OF BARCODES SEPARATED BY COMMA> <NUMBER OF MISMATCHES ALLOWED IN BARCODE>\n\nInput file - assumed 4th column is the barcode in a tab delimited file\n";
-unless(@ARGV == 3) { croak "$USAGE\n"; exit; }
+my $USAGE = "\nperl Demultiplex_HITS_V1.pl <Input file> <LIST OF BARCODES SEPARATED BY COMMA> <NUMBER OF MISMATCHES ALLOWED IN BARCODE> <Output Directory>\n\nInput file - assumed 4th column is the barcode in a tab delimited file\n";
+unless(@ARGV == 4) { croak "$USAGE\n"; exit; }
 
-my($ofile, $dirs, $suffix) = fileparse($ARGV[0]);
+my($ofile, $dirs, $suffix) = fileparse($ARGV[0]); # Incorporated for maybe change in future to have a better way to get the arguments and have output directory as optional
+$ARGV[3] =~ s/[\n\r]//g;
+$dirs = $ARGV[3]; 
 
 # Open input file
 $ARGV[0] =~ s/[\n\r]//g;
